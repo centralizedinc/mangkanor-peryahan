@@ -1,0 +1,188 @@
+{
+	"textures": [
+		{
+			"image": "coin.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 272,
+				"h": 44
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "MEDIUM_0000_Capa-1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 41,
+						"h": 42
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 41,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0001_Capa-2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 41,
+						"h": 42
+					},
+					"frame": {
+						"x": 44,
+						"y": 1,
+						"w": 41,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0007_Capa-8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 41,
+						"h": 42
+					},
+					"frame": {
+						"x": 87,
+						"y": 1,
+						"w": 41,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0002_Capa-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 36,
+						"h": 42
+					},
+					"frame": {
+						"x": 130,
+						"y": 1,
+						"w": 36,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0006_Capa-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 36,
+						"h": 42
+					},
+					"frame": {
+						"x": 168,
+						"y": 1,
+						"w": 36,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0003_Capa-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 0,
+						"w": 25,
+						"h": 42
+					},
+					"frame": {
+						"x": 206,
+						"y": 1,
+						"w": 25,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0005_Capa-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 0,
+						"w": 25,
+						"h": 42
+					},
+					"frame": {
+						"x": 233,
+						"y": 1,
+						"w": 25,
+						"h": 42
+					}
+				},
+				{
+					"filename": "MEDIUM_0004_Capa-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 41,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 0,
+						"w": 11,
+						"h": 42
+					},
+					"frame": {
+						"x": 260,
+						"y": 1,
+						"w": 11,
+						"h": 42
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:9e73e2cff1a670b1f5c387bf92e3f277:ba280aaafac9bef0f58a9ca3d05a3c4f:37dcde439de7f7292f96409a4c62c08e$"
+	}
+}
