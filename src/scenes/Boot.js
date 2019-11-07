@@ -19,36 +19,47 @@ export default class BootScene extends Scene {
   }
 
   preload () {
-    // this.facebook.once('startgame', this.create, this);
-    // this.facebook.showLoadProgress(this);
+    this.facebook.once('startgame', this.startGame, this);
+    this.facebook.showLoadProgress(this);
 
+    //roleta game
     this.load.image('wheel', wheel)
     this.load.image('pin', pin)
+
+    //color game
+    this.load.atlas('blocks', blocks, blocks_json);
+
+    //common
+    this.load.atlas('coin', coin, coin_json)
     this.load.image('logo', logo)
+
+    //background
     this.load.image('background', background)
     this.load.image('color_back', color_back)
     this.load.image('pulaputi_back', pulaputi_back)
     this.load.image('roleta', roleta)
-    this.load.image('background', background)
-    this.load.image('background', background)
-    this.load.atlas('coin', coin, coin_json);
-    this.load.atlas('blocks', blocks, blocks_json);
+    
+    
     // image.scale.setTo(0.1,0.1);
     // this.load.image('bomb', bomb)
     // this.load.audio('thud', [thudMp3, thudOgg])
-    this.add.text(this.game.renderer.width/2.5, this.game.renderer.height/2.2, 'Loading ...').setOrigin(0)
-    this.loadingBar = this.add.graphics({
-        fillStyle: {color: 0xffffff}
-      })
+    // this.add.text(this.game.renderer.width/2.5, this.game.renderer.height/2.2, 'Loading ...').setOrigin(0)
+    // this.loadingBar = this.add.graphics({
+    //     fillStyle: {color: 0xffffff}
+    //   })
     
-    this.load.on('progress', (percent)=>{
-      this.loadingBar.fillRect(0, this.game.renderer.height/2, this.game.renderer.width * percent, 10)
-    })
+    // this.load.on('progress', (percent)=>{
+    //   this.loadingBar.fillRect(0, this.game.renderer.height/2, this.game.renderer.width * percent, 10)
+    // })
   }
 
-  create () {
-    this.scene.start('MenuScene')
+  startGame () {
+    // this.scene.start('MenuScene')
     // this.scene.start('ColorGameScene')
     
+  }
+
+  create(){
+    this.scene.start('MenuScene')
   }
 }

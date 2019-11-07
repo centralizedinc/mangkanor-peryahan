@@ -2,10 +2,18 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin")
+const fs = require('fs');
 
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
+  devServer: {
+    https: {
+        key: fs.readFileSync('./key.pem'),
+        cert: fs.readFileSync('./cert.pem')
+    }
+},
   module: {
     rules: [
       {
@@ -35,6 +43,11 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: "./index.html"
-    })
+    }),
+    new CopyWebpackPlugin([{
+      from:'./fbapp-config.json',
+      to:'',
+      flatten:true
+      }]),
   ]
 };

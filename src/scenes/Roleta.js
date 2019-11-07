@@ -43,6 +43,10 @@ export default class RoletaScene extends Scene {
   
   create () {
 
+    this.facebook.loadPlayerPhoto(this, 'player').once('photocomplete', this.addPlayerPhoto, this);
+    this.add.text(this.game.renderer.width/2, this.game.renderer.height/4, this.facebook.playerName).setOrigin(0.5);
+    this.facebook.openInvite('Hello, come play with me')
+    
     // this.add.image(0,0,'color_back').setOrigin(0).setScale(0.4).setDepth(0)
     this.canSpin = true;
     this.hold = false
@@ -91,6 +95,12 @@ export default class RoletaScene extends Scene {
     }
     
   }
+
+  addPlayerPhoto (key)
+    {
+        this.add.image(this.game.renderer.width/2, this.game.renderer.height/2, key).setScale(0.1);
+        
+    }
 
   holdWheel(){
     if(this.canSpin){
