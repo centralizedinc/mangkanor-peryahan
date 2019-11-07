@@ -26,7 +26,9 @@ export default class MenuScene extends Scene {
 
         //play audio
         this.sound.add('coins_audio')
-        this.sound.play('coins_audio', { volume: 0.75 })
+        this.sound.play('coins_audio', { volume: 0.5 })
+        this.sound.add('background_music')
+        this.sound.play('background_music', { volume: 0.75 })
 
         this.cameras.main.fadeIn(500);
         // set background color

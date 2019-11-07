@@ -17,6 +17,7 @@ import coin_json from '../assets/coin.json'
 
 //audio
 import coins_sounds from '../assets/audio/Coins_Pouring_00.mp3'
+import background_music from '../assets/audio/background_music.ogg'
 
 // import background from '../assets/background.jpg'
 // import color_back from '../assets/color_back.jpg'
@@ -53,6 +54,7 @@ export default class BootScene extends Scene {
 
     //audio
     this.load.audio('coins_audio', [coins_sounds])
+    this.load.audio('background_music', [background_music])
 
   }
 
