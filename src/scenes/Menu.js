@@ -26,8 +26,11 @@ export default class MenuScene extends Scene {
 
         //play audio
         this.sound.add('coins_audio')
-        this.sound.play('coins_audio', { volume: 0.5 })
         this.sound.add('background_music')
+
+        // stop before playing
+        this.sound.stopAll()
+        this.sound.play('coins_audio', { volume: 0.5 })
         this.sound.play('background_music', { volume: 0.75 })
 
         this.cameras.main.fadeIn(500);
@@ -45,7 +48,12 @@ export default class MenuScene extends Scene {
         
 
         //player
-        this.facebook.loadPlayerPhoto(this, 'player').once('photocomplete', this.addPhoto, this);
+        if(!this.game.player.avatar){
+            this.facebook.loadPlayerPhoto(this, 'player').once('photocomplete', this.addPhoto, this);
+        }else{
+            this.add.image(50,50, this.game.player.avatar).setScale(0.12)
+        }
+        
         this.add.text(50,80,this.game.player.name, {fontSize:'10px'}).setOrigin(0.5)
 
         //Menus

@@ -64,7 +64,7 @@ export default class RoletaScene extends Scene {
     this.pin = this.add.sprite(this.game.center.x, this.game.center.y-130, "pin");    
     this.pin.setScale(0.025)
     
-    this.exit = this.add.text(this.game.renderer.width - 50, 20, 'Exit')
+    this.exit = this.add.text(this.game.renderer.width - 50, 50, 'Exit')
     this.winnings = this.add.text(this.game.config.width / 2, this.game.config.height / 2, "").setOrigin(0.5);
     
     this.wheel.setInteractive()
