@@ -15,7 +15,7 @@ FBInstant.initializeAsync().then(()=> {
   const config = {
       type: Phaser.AUTO,
       width: 350,
-      height: 550,
+      height: 650,
       parent: 'game-container',
       scale: {
         mode: Phaser.Scale.FIT,
@@ -32,6 +32,7 @@ FBInstant.initializeAsync().then(()=> {
   };
 
   const game = new Phaser.Game(config);
+  
 })
 
 

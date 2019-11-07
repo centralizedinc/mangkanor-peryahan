@@ -1,16 +1,27 @@
 import { Scene } from 'phaser'
+
+//roleta
 import wheel from '../assets/wheel.png'
 import pin from '../assets/pin.png'
-import logo from '../assets/logo.jpg'
-import background from '../assets/background.jpg'
-import coin from '../assets/coin.png'
-import coin_json from '../assets/coin.json'
+
+//color game
 import blocks from '../assets/blocks_new.png'
 import blocks_json from '../assets/blocks_new.json'
 
-import color_back from '../assets/color_back.jpg'
-import pulaputi_back from '../assets/pulaputi_back.jpg'
-import roleta from '../assets/roleta.jpg'
+//common
+import logo from '../assets/logo.jpg'
+import mk from '../assets/mk.png'
+
+import coin from '../assets/coin.png'
+import coin_json from '../assets/coin.json'
+
+//audio
+import coins_sounds from '../assets/audio/Coins_Pouring_00.mp3'
+
+// import background from '../assets/background.jpg'
+// import color_back from '../assets/color_back.jpg'
+// import pulaputi_back from '../assets/pulaputi_back.jpg'
+// import roleta from '../assets/roleta.jpg'
 
 
 export default class BootScene extends Scene {
@@ -32,34 +43,30 @@ export default class BootScene extends Scene {
     //common
     this.load.atlas('coin', coin, coin_json)
     this.load.image('logo', logo)
+    this.load.image('mk', mk)
 
-    //background
-    this.load.image('background', background)
-    this.load.image('color_back', color_back)
-    this.load.image('pulaputi_back', pulaputi_back)
-    this.load.image('roleta', roleta)
-    
-    
-    // image.scale.setTo(0.1,0.1);
-    // this.load.image('bomb', bomb)
-    // this.load.audio('thud', [thudMp3, thudOgg])
-    // this.add.text(this.game.renderer.width/2.5, this.game.renderer.height/2.2, 'Loading ...').setOrigin(0)
-    // this.loadingBar = this.add.graphics({
-    //     fillStyle: {color: 0xffffff}
-    //   })
-    
-    // this.load.on('progress', (percent)=>{
-    //   this.loadingBar.fillRect(0, this.game.renderer.height/2, this.game.renderer.width * percent, 10)
-    // })
+    // //background
+    // this.load.image('background', background)
+    // this.load.image('color_back', color_back)
+    // this.load.image('pulaputi_back', pulaputi_back)
+    // this.load.image('roleta', roleta)
+
+    //audio
+    this.load.audio('coins_audio', [coins_sounds])
+
   }
 
-  startGame () {
-    // this.scene.start('MenuScene')
-    // this.scene.start('ColorGameScene')
-    
-  }
+  startGame(){
+    this.game.player = {
+      name:this.facebook.playerName, 
+      credits:2500
+    }
 
-  create(){
+    this.game.center = {
+      x:this.game.renderer.width/2,
+      y: this.game.renderer.height/2
+    }
     this.scene.start('MenuScene')
   }
+
 }

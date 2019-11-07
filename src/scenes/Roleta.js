@@ -31,8 +31,7 @@ var gameOptions = {
   ],
   rotationTime: 10000
 }
-var rounds, degrees, wheel_tween
-var total_amount = 2500
+var rounds, degrees
 
 
 export default class RoletaScene extends Scene {
@@ -42,22 +41,29 @@ export default class RoletaScene extends Scene {
 
   
   create () {
-
-    this.facebook.loadPlayerPhoto(this, 'player').once('photocomplete', this.addPlayerPhoto, this);
-    this.add.text(this.game.renderer.width/2, this.game.renderer.height/4, this.facebook.playerName).setOrigin(0.5);
-    this.facebook.openInvite('Hello, come play with me')
-    
-    // this.add.image(0,0,'color_back').setOrigin(0).setScale(0.4).setDepth(0)
+    this.cameras.main.fadeIn(500);
+    // intial state
     this.canSpin = true;
     this.hold = false
+
+    // set background color
+    this.cameras.main.setBackgroundColor('#640D0D')
+
+    //credits
+    this.anims.create({ key: 'coin_animation', frames: this.anims.generateFrameNames('coin'), frameRate:24,  repeat: -1 });
+    this.add.sprite(80, 50, 'coin').setScale(0.3).play("coin_animation")
+    this.total_coins = this.add.text(90,50,this.game.player.credits).setOrigin(0,0.5)
+    this.credit = this.add.text(90,70,'', {fontSize:'12px'}).setOrigin(0,0.5)
+
+    //player
+    this.add.image(50,50, this.game.player.avatar).setScale(0.12)
+    this.add.text(50,80,this.game.player.name, {fontSize:'10px'}).setOrigin(0.5)
+
+    
     this.wheel = this.add.sprite(this.game.config.width / 2, this.game.config.height / 2, "wheel");
-    this.pin = this.add.sprite(this.game.config.width / 2, this.game.config.height / 3.7, "pin");    
+    this.pin = this.add.sprite(this.game.center.x, this.game.center.y-130, "pin");    
     this.pin.setScale(0.025)
-
-    this.spin_coin = this.anims.create({ key: 'coin_animation', frames: this.anims.generateFrameNames('coin'), frameRate:24,  repeat: -1 });
-    this.coin = this.add.sprite(30, 30, 'coin').setScale(0.5)
-
-    this.total_coins = this.add.text(45, 20, total_amount)
+    
     this.exit = this.add.text(this.game.renderer.width - 50, 20, 'Exit')
     this.winnings = this.add.text(this.game.config.width / 2, this.game.config.height / 2, "").setOrigin(0.5);
     
@@ -70,21 +76,51 @@ export default class RoletaScene extends Scene {
       this.scene.start('MenuScene')
     });
 
-  //   var tween_winning = this.tweens.add({
-  //     targets: [ this.winnings],
-  //     x: '+=600',
-  //     y: '+=200',
-  //     duration: 4000,
-  //     ease: 'Power3'
-  // });
-    
 
+
+    // camera zoom animation
+    this.cam_zoom = this.tweens.add({
+      targets: this.cameras.main,
+      props: {
+          zoom: { value: 2.5, duration: 2000, ease: 'Sine.easeInOut' },
+          rotation: { value: 10, duration: 1000, ease: 'Cubic.easeInOut' }
+      },
+      yoyo: true,
+      paused:true,
+      onComplete:()=>{
+        this.credit.setText(`+ ${gameOptions.slicePrizes[this.prize].value}`);
+        this.credit_anim.resume();
+      }        
+    });
+
+    //credits animation
+    this.credit_anim = this.tweens.add({
+      targets:this.credit,
+      y:60,
+      duration:1000,
+      paused:true,
+      onComplete:()=>{
+        this.credit.setText('')
+        this.total_coins.text = this.game.player.credits += gameOptions.slicePrizes[this.prize].value
+      }
+    })
+    
+    //debit animation
+    this.debit_anim = this.tweens.add({
+      targets:this.credit,
+      y:80,
+      duration:1000,
+      paused:true,
+      onComplete:()=>{
+        this.credit.setText('')
+        this.total_coins.text = this.game.player.credits -= 500 
+      }
+    })
   }
 
   update (time, delta) {
     if(this.hold){
       this.wheel.rotation = Math.atan2(this.input.y - this.wheel.y, this.input.x - this.wheel.x);
-      // this.pin.angle -= 2;
     }
 
     if(!this.canSpin){
@@ -96,11 +132,7 @@ export default class RoletaScene extends Scene {
     
   }
 
-  addPlayerPhoto (key)
-    {
-        this.add.image(this.game.renderer.width/2, this.game.renderer.height/2, key).setScale(0.1);
-        
-    }
+ 
 
   holdWheel(){
     if(this.canSpin){
@@ -111,17 +143,18 @@ export default class RoletaScene extends Scene {
   }
 
   spinWheel(){
-    this.total_coins.text = total_amount -= 500
+    this.credit.setText('- 500');
+    this.debit_anim.resume();
+    
     this.hold = false
-    this.coin.play("coin_animation")
-    if(this.canSpin){
-      
+
+    if(this.canSpin){      
       rounds = Phaser.Math.Between(5, 20);
       degrees = Phaser.Math.Between(0, 360);
       this.canSpin = false;
-      var prize = gameOptions.slices - 1 - Math.floor(degrees / (360 / gameOptions.slices));
+      this.prize = gameOptions.slices - 1 - Math.floor(degrees / (360 / gameOptions.slices));
       var tween = this.tweens
-      wheel_tween = this.tweens.add({
+      this.tweens.add({
         targets: [this.wheel],
         angle: 360 * rounds + degrees,
         duration: gameOptions.rotationTime,
@@ -131,55 +164,9 @@ export default class RoletaScene extends Scene {
             // player can spin again
             this.canSpin = true;
             this.pin.angle = 0;
-            this.winnings.text = gameOptions.slicePrizes[prize].name
-            this.coin.anims.stop()
-            var winnings = this.winnings
-            var game = this.game
-            var total_coins = this.total_coins
-          //   this.tweens.add({
-          //     targets: [ this.winnings],
-          //     x: '-=140',
-          //     y: '-=200',
-          //     duration: 3000,
-          //     ease: 'Power3',
-          //     delay: 1000,
-          //     onComplete:function (tween){
-          //       console.log('oncomplete')
-          //       winnings.text ="",
-          //       winnings.x = game.config.width / 2 
-          //       winnings.y = game.config.height / 2
-          //       total_coins.text = total_amount += gameOptions.slicePrizes[prize].value
-          //     }
-          // });
-              this.tweens.add({
-                targets: this.cameras.main,
-                props: {
-                    zoom: { value: 2.5, duration: 2000, ease: 'Sine.easeInOut' },
-                    rotation: { value: 10, duration: 1000, ease: 'Cubic.easeInOut' }
-                },
-                yoyo: true,
-                onComplete:function(tween){
-                  winnings.text ="",
-                winnings.x = game.config.width / 2 
-                winnings.y = game.config.height / 2
-                total_coins.text = total_amount += gameOptions.slicePrizes[prize].value
-                  // tweens.add({
-                  //       targets: [ this.winnings],
-                  //       x: '-=140',
-                  //       y: '-=200',
-                  //       duration: 3000,
-                  //       ease: 'Power3',
-                  //       delay: 1000,
-                  //       onComplete:function (tween){
-                  //         console.log('oncomplete')
-                  //         winnings.text ="",
-                  //         winnings.x = game.config.width / 2 
-                  //         winnings.y = game.config.height / 2
-                  //         total_coins.text = total_amount += gameOptions.slicePrizes[prize].value
-                  //       }
-                  //   });
-                }
-            });
+            this.winnings.text = gameOptions.slicePrizes[this.prize].name       
+            
+            this.cam_zoom.resume()
         }
     });
       
