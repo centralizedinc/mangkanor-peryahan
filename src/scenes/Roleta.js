@@ -89,6 +89,8 @@ export default class RoletaScene extends Scene {
       paused:true,
       onComplete:()=>{
         this.credit.setText(`+ ${gameOptions.slicePrizes[this.prize].value}`);
+        this.sound.add('coins_audio')
+        this.sound.play('coins_audio', { volume: 0.75 })
         this.credit_anim.resume();
       }        
     });
