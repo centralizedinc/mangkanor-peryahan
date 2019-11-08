@@ -4,6 +4,8 @@ import { Scene } from 'phaser'
 import wheel from '../assets/wheel.png'
 import pin from '../assets/pin.png'
 
+import ball from '../assets/ball.png'
+
 //color game
 import blocks from '../assets/blocks_new.png'
 import blocks_json from '../assets/blocks_new.json'
@@ -19,6 +21,10 @@ import coin_json from '../assets/coin.json'
 import coins_sounds from '../assets/audio/Coins_Pouring_00.mp3'
 import background_music from '../assets/audio/background_music.ogg'
 import background_music_mp3 from '../assets/audio/background_music.mp3'
+
+//fonts
+import title_font from '../assets/font/font.png'
+import title_font_fnt from '../assets/font/font.fnt'
 
 
 // import background from '../assets/background.jpg'
@@ -43,6 +49,9 @@ export default class BootScene extends Scene {
     //color game
     this.load.atlas('blocks', blocks, blocks_json);
 
+    //pula puti
+    this.load.image('ball', ball)
+
     //common
     this.load.atlas('coin', coin, coin_json)
     this.load.image('logo', logo)
@@ -57,6 +66,9 @@ export default class BootScene extends Scene {
     //audio
     this.load.audio('coins_audio', [coins_sounds])
     this.load.audio('background_music', [background_music, background_music_mp3])
+
+    //fonts
+    this.load.bitmapFont('main', title_font, title_font_fnt);
 
   }
 

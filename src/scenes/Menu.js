@@ -57,7 +57,8 @@ export default class MenuScene extends Scene {
         this.add.text(50,80,this.game.player.name, {fontSize:'10px'}).setOrigin(0.5)
 
         //Menus
-        this.add.text(center.x, center.y - 200,'Mang Kanor Peryahan', {fontSize:'24px'}).setOrigin(0.5)
+        this.add.bitmapText(center.x, center.y - 200, 'main', 'Mang Kanor Peryahan').setOrigin(0.5).setScale(0.4);
+        // this.add.text(center.x, center.y - 200,'Mang Kanor Peryahan', {fontSize:'24px'}).setOrigin(0.5)
         this.add.image(center.x, center.y - 130, 'mk').setScale(0.11).setDepth(-1)
         this.add.text(center.x, center.y - 80,'Tara! Laro tayo!', {fontSize:'20px'}).setOrigin(0.5)
         

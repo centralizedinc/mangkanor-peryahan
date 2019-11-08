@@ -34,6 +34,20 @@ module.exports = {
       {
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
         loader: 'file-loader'
+      },
+      {
+        test: /\.fnt$/,
+        use: [
+          'file-loader',
+          'extract-loader',
+          {
+            loader: 'html-loader',
+            options: {
+              // by adding this it will extract each "page” file from the xml as well
+              attrs: ['page:file'],
+            },
+          },
+        ],
       }
     ]
   },

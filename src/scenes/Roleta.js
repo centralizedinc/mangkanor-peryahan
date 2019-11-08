@@ -53,7 +53,7 @@ export default class RoletaScene extends Scene {
     this.anims.create({ key: 'coin_animation', frames: this.anims.generateFrameNames('coin'), frameRate:24,  repeat: -1 });
     this.add.sprite(80, 50, 'coin').setScale(0.3).play("coin_animation")
     this.total_coins = this.add.text(90,50,this.game.player.credits).setOrigin(0,0.5)
-    this.credit = this.add.text(90,70,'', {fontSize:'12px'}).setOrigin(0,0.5)
+    this.credit = this.add.text(80,70,'', {fontSize:'12px'}).setOrigin(0,0.5)
 
     //player
     this.add.image(50,50, this.game.player.avatar).setScale(0.12)
