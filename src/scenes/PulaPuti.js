@@ -1,4 +1,4 @@
-import {Scene} from 'phaser'
+import {Scene, Physics} from 'phaser'
 
 var total_amount = 2500
 var x = 0
@@ -55,11 +55,13 @@ export default class PulaPutiScene extends Scene {
             .setScale(0.06)
             .setDepth(2)
             .setCollideWorldBounds(true)
-            .setBounce(0.8)
-            .setVelocity(Phaser.Math.Between(-100, 100),Phaser.Math.Between(-100, 100))
+            // .setBounce(0.8)
+            // .setVelocity(Phaser.Math.Between(-100, 100),Phaser.Math.Between(-100, 100))
             
             
-        this.ball.setInteractive()        
+        this.ball.setInteractive()   
+        this.ball.on("pointerdown", this.holdBall, this)     
+        this.ball.on("pointerup", this.dropBall, this)  
         
         //rotate ball
         this.tweens.add({
@@ -98,12 +100,11 @@ export default class PulaPutiScene extends Scene {
         this.winning_anim = this.add.tween({
             targets: [this.winning_block,this.winning_text],
             props:{
-                scale:2
+                scale:1.5
             },
             paused:true,            
             yoyo: true,
-            duration: 1000,
-            repeat:2,
+            duration: 100,
             onComplete:()=>{
                 this.winning_block.setVisible(false)
                 this.winning_text.setVisible(false)
@@ -122,8 +123,9 @@ export default class PulaPutiScene extends Scene {
             paused:true,
             onComplete:()=>{
                 this.init_board.setVisible(false)
-                this.board.scaleY(0.01)
-                this.board.setVisible(true)
+                // this.board.setVisible(true)
+                this.board.setScale(1, 0.01)
+                this.show_board_anim.resume()
                 
                 this.ball.setVisible(false)
             }
@@ -131,12 +133,19 @@ export default class PulaPutiScene extends Scene {
 
         this.show_board_anim = this.add.tween({
             targets:this.board,
-            scaleY:0.1,
-            ease: 'Linear',
-            duration: 300,
-            repeat: 0,
-            yoyo: false,
+            scaleY:1,
             paused:true,
+            onUpdate:()=>{
+                this.board.setVisible(true)
+            },
+            onComplete:()=>{
+                play = true;  
+                this.board.setScale(1,1)        
+                if(cells.length<=1)   
+                for(var i=0; i<box_no; i++){
+                    cells.push(this.add.rectangle(10 + x, 60, 25, 25).setStrokeStyle(4, 0).setOrigin(0))
+                }
+            }
         })
 
         
@@ -191,6 +200,7 @@ export default class PulaPutiScene extends Scene {
         this.physics.pause()
 
         this.init_board.setVisible(true)
+        this.init_board.setScale(1,1)
         this.board.setVisible(false)
         
     }
@@ -209,6 +219,7 @@ export default class PulaPutiScene extends Scene {
         }
         if(play){            
             if(cells.length > 1){
+                this.board.setScale(1,1)
                 cells.forEach(cell=>{
                     cell.x = (Phaser.Math.Between(0,11) * 25) +25
                     cell.y = (Phaser.Math.Between(0,11) * 25) +150
@@ -244,7 +255,6 @@ export default class PulaPutiScene extends Scene {
                     props:{
                         strokeColor:0xfffff0
                     },
-                    repeat:10,
                     yoyo:true,
                     duration:500,
                     onComplete:()=>{
@@ -291,15 +301,13 @@ export default class PulaPutiScene extends Scene {
             if(this.initialTime <=0){
                 this.countdown_message.text = ''
                 this.hold = false;
+                this.ball.setBounce(0.4)
+                this.ball.setVelocity(
+                    Phaser.Math.Between(-100, 100), 
+                    Phaser.Math.Between(-100, 100))
                 this.physics.resume()
                 resetting =false;
-                // this.board.setVisible(true)
-                // this.init_board.setVisible(false)
-                // this.ball.setVisible(false)
-                // if(cells.length<=1)   
-                // for(var i=0; i<box_no; i++){
-                //     cells.push(this.add.rectangle(10 + x, 60, 25, 25).setStrokeStyle(4, 0).setOrigin(0))
-                // }           
+                         
             }
         }
         

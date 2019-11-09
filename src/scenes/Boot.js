@@ -27,7 +27,7 @@ import title_font from '../assets/font/font.png'
 import title_font_fnt from '../assets/font/font.fnt'
 
 
-// import background from '../assets/background.jpg'
+import background from '../assets/background.jpeg'
 // import color_back from '../assets/color_back.jpg'
 // import pulaputi_back from '../assets/pulaputi_back.jpg'
 // import roleta from '../assets/roleta.jpg'
@@ -58,7 +58,7 @@ export default class BootScene extends Scene {
     this.load.image('mk', mk)
 
     // //background
-    // this.load.image('background', background)
+    this.load.image('background', background)
     // this.load.image('color_back', color_back)
     // this.load.image('pulaputi_back', pulaputi_back)
     // this.load.image('roleta', roleta)

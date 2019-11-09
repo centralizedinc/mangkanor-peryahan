@@ -36,6 +36,7 @@ export default class MenuScene extends Scene {
         this.cameras.main.fadeIn(500);
         // set background color
         this.cameras.main.setBackgroundColor('#640D0D')
+        // this.add.image(this.game.center.x, this.game.center.y, 'background').setOrigin(0.5).setDepth(-1).setScale(2)
 
         //credits
         this.anims.create({ key: 'coin_animation', frames: this.anims.generateFrameNames('coin'), frameRate:24,  repeat: -1 });
