@@ -1,9 +1,8 @@
 
 import {Scene} from 'phaser'
 
-var total_amount = 2500
 var bets = [0,0,0,0,0,0]
-var winnings = 0;
+var winnings = {total:0};
 var colors = [
     "pink",
     "white",
@@ -126,18 +125,43 @@ export default class ColorGameScene extends Scene {
         this.createBetButton(this.red,5)
 
         this.bet_text = []
-        this.bet_text.push(this.add.text(60, 435, bets[0], {color:0xffffff}).setDepth(5))
-        this.bet_text.push(this.add.text(160, 435, bets[1], {color:0xffffff}).setDepth(5))
-        this.bet_text.push(this.add.text(260, 435, bets[2], {color:0xffffff}).setDepth(5))
+        this.bet_text.push(this.add.text(60, 435, bets[0], {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(160, 435, bets[1], {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(260, 435, bets[2], {color:0xffffff}).setDepth(5).setOrigin(0.5))
 
-        this.bet_text.push(this.add.text(60, 485, bets[3], {color:0xffffff}).setDepth(5))
-        this.bet_text.push(this.add.text(160, 485, bets[4], {color:0xffffff}).setDepth(5))
-        this.bet_text.push(this.add.text(260, 485, bets[5], {color:0xffffff}).setDepth(5))
+        this.bet_text.push(this.add.text(60, 485, bets[3], {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(160, 485, bets[4], {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(260, 485, bets[5], {color:0xffffff}).setDepth(5).setOrigin(0.5))
 
         this.exit.setInteractive()
         this.exit.on("pointerup", ()=>{
             this.scene.start('MenuScene')
           });
+
+
+        //credits animation
+    this.credit_anim = this.tweens.add({
+        targets:this.credit,
+        y:60,
+        duration:1000,
+        paused:true,
+        onComplete:()=>{
+          this.credit.setText('')
+          this.total_coins.text = this.game.player.credits += winnings.total
+        }
+      })
+      
+      //debit animation
+      this.debit_anim = this.tweens.add({
+        targets:this.credit,
+        y:80,
+        duration:1000,
+        paused:true,
+        onComplete:()=>{
+          this.credit.setText('')
+          this.total_coins.text = this.game.player.credits -= 500 
+        }
+      })
     }
 
     /**
@@ -154,8 +178,8 @@ export default class ColorGameScene extends Scene {
             btn.setStrokeStyle()
         })
         btn.on('pointerup',()=>{
-            total_amount -=100
-            this.total_coins.setText(total_amount)
+            this.game.player.credits -=100
+            this.total_coins.setText(this.game.player.credits)
             bets[indx] +=100
             this.bet_text[indx].setText(bets[indx] )
         })
@@ -199,7 +223,10 @@ export default class ColorGameScene extends Scene {
         block2_done = false;
         block3_done = false;
         bets = [0,0,0,0,0,0]
-
+        winnings = {total:0,slot1:{}, slot2:{}, slot3:{}};
+        this.bet_text.forEach(txt=>{
+            txt.setText(0)
+        })
         //hide blocks
         this.block1.setVisible(false)
         this.block2.setVisible(false)
@@ -222,49 +249,92 @@ export default class ColorGameScene extends Scene {
         
         if(this.block1.body.deltaY() == 0 && this.block1.body.onFloor() && !block1_done){
             block1_done = true
-            var indx=Phaser.Math.Between(0,5)
-            var final = final_scenes[indx]
+            var indx1=Phaser.Math.Between(0,5)
+            var final = final_scenes[indx1]
+            //stop block
             this.block1.setVelocity(0)
             this.block1.anims.stop()
             this.block1.anims.setCurrentFrame(this.block1.anims.currentAnim.frames[final.index]);
+            //set winning color
+            // this.slot1.setTexture(colors[indx1])
+            this.slot1.setY(this.block1.y)
             
-            total_amount += (bets[indx] * 2)
-            console.log(bets[indx] * 2)
-            this.total_coins.setText(total_amount)
+            winnings.slot1 = {color:colors[indx1],bet:bets[indx1],value:bets[indx1]*2, index:indx1}
+            // winnings.total += (bets[indx1] * 2)
+            
+
+            //credit animation
+            // if((bets[indx] * 2)){
+            //     this.credit.setText(`+ ${(bets[indx] * 2)}`)
+            //     this.tweens.add({
+            //         targets:this.credit,
+            //         y:60,
+            //         duration:1000,
+            //         onComplete:()=>{
+            //         this.credit.setText('')
+            //         this.total_coins.text = this.game.player.credits += (bets[indx] * 2)
+            //         }
+            //     })
+            // }
         }
 
         if(this.block2.body.deltaY() == 0 && this.block2.body.onFloor() && !block2_done){
             block2_done = true
-            var indx=Phaser.Math.Between(0,5)
-            var final = final_scenes[indx]
+            var indx2=Phaser.Math.Between(0,5)
+            var final = final_scenes[indx2]
+            
             this.block2.setVelocity(0)
             this.block2.anims.stop()
             this.block2.anims.setCurrentFrame(this.block2.anims.currentAnim.frames[final.index]);
-
-            total_amount += (bets[indx] * 2)
-            console.log(bets[indx] * 2)
-            this.total_coins.setText(total_amount)
+            
+            // this.slot2.setTexture(colors[indx2])
+            this.slot2.setY(this.block2.y)
+            
+            winnings.slot2 = {color:colors[indx2],bet:bets[indx2],value:bets[indx2]*2, index:indx2}
+            // winnings.total += (bets[indx2] * 2)
         }
 
         if(this.block3.body.deltaY() == 0 && this.block3.body.onFloor() && !block3_done){
             block3_done = true
-            var indx=Phaser.Math.Between(0,5)
-            var final = final_scenes[indx]
+            var indx3=Phaser.Math.Between(0,5)
+            var final = final_scenes[indx3]
+
             this.block3.setVelocity(0)
             this.block3.anims.stop()
             this.block3.anims.setCurrentFrame(this.block3.anims.currentAnim.frames[final.index]);
 
-            total_amount += (bets[indx] * 2)
-            console.log(bets[indx] * 2)
-            this.total_coins.setText(total_amount)
+            // this.slot3.setTexture(colors[indx3])
+            this.slot3.setY(this.block3.y)
+
+            winnings.slot3 = {color:colors[indx3],bet:bets[indx3],value:bets[indx3]*2, index:indx3}
+            // winnings.total += (bets[indx3] * 2)
         }
 
         if(block1_done && block2_done && block3_done && !isAnimation){
-            this.reset()
+            
             //animate winning blocks
+            
             isAnimation=true;
+            winnings.total = (bets[winnings.slot1.index] + bets[winnings.slot2.index] + bets[winnings.slot3.index])*2
+            console.log(JSON.stringify(winnings))
+            console.log(JSON.stringify(bets))
+            console.log()
+            this.slot1.setVisible(true).setScale(0.04,0.01).setTexture(winnings.slot1.color)
+            this.slot2.setVisible(true).setScale(0.04,0.01).setTexture(winnings.slot2.color)
+            this.slot3.setVisible(true).setScale(0.04,0.01).setTexture(winnings.slot3.color)
+
+            this.credit.setText(`+ ${winnings.total}`)
+            this.credit_anim.resume()
             this.add.tween({
-                targets:
+                targets: [this.slot1, this.slot2, this.slot3],
+                props:{
+                    scaleY:{value:0.04, duration: 100},
+                    y:{value:130, duration: 100}
+                },
+                onComplete:()=>{
+                    this.reset()
+                    isAnimation = false;
+                }
             })
         }
         
