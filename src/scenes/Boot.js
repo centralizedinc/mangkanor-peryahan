@@ -9,6 +9,12 @@ import ball from '../assets/ball.png'
 //color game
 import blocks from '../assets/blocks_new.png'
 import blocks_json from '../assets/blocks_new.json'
+import blue from '../assets/blue.png'
+import green from '../assets/green.png'
+import pink from '../assets/pink.png'
+import red from '../assets/red.png'
+import white from '../assets/white.png'
+import yellow from '../assets/yellow.png'
 
 //common
 import logo from '../assets/logo.jpg'
@@ -48,6 +54,12 @@ export default class BootScene extends Scene {
 
     //color game
     this.load.atlas('blocks', blocks, blocks_json);
+    this.load.image('blue', blue)
+    this.load.image('green', green)
+    this.load.image('pink', pink)
+    this.load.image('red', red)
+    this.load.image('white', white)
+    this.load.image('yellow', yellow)
 
     //pula puti
     this.load.image('ball', ball)

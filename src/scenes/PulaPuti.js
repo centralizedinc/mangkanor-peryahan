@@ -55,8 +55,8 @@ export default class PulaPutiScene extends Scene {
             .setScale(0.06)
             .setDepth(2)
             .setCollideWorldBounds(true)
-            // .setBounce(0.8)
-            // .setVelocity(Phaser.Math.Between(-100, 100),Phaser.Math.Between(-100, 100))
+            .setBounce(0.5)
+            .setVelocity(Phaser.Math.Between(-100, 100),Phaser.Math.Between(-100, 100))
             
             
         this.ball.setInteractive()   
@@ -98,15 +98,16 @@ export default class PulaPutiScene extends Scene {
         this.winning_text = this.add.text(this.game.center.x, this.game.center.y-50,'PUTI',{color:0xffffff}).setOrigin(0.5).setDepth(10).setVisible(false)
 
         this.winning_anim = this.add.tween({
-            targets: [this.winning_block,this.winning_text],
+            // targets: [this.winning_block,this.winning_text],
+            targets:this.winning_text,
+            flipX:true,
             props:{
                 scale:1.5
             },
-            paused:true,            
-            yoyo: true,
-            duration: 100,
+            paused:true,  
+            duration: 1000,
             onComplete:()=>{
-                this.winning_block.setVisible(false)
+                // this.winning_block.setVisible(false)
                 this.winning_text.setVisible(false)
                 this.reset()
             }  
@@ -132,7 +133,7 @@ export default class PulaPutiScene extends Scene {
         })
 
         this.show_board_anim = this.add.tween({
-            targets:this.board,
+            targets:this.board,            
             scaleY:1,
             paused:true,
             onUpdate:()=>{
@@ -143,11 +144,37 @@ export default class PulaPutiScene extends Scene {
                 this.board.setScale(1,1)        
                 if(cells.length<=1)   
                 for(var i=0; i<box_no; i++){
-                    cells.push(this.add.rectangle(10 + x, 60, 25, 25).setStrokeStyle(4, 0).setOrigin(0))
+                    // cells.push(this.add.rectangle(10 + x, 60, 25, 25).setStrokeStyle(4, 0).setOrigin(0))
+                    cells.push(this.add.image(10 + x, 60, 'ball').setScale(0.05).setOrigin(-0.2))
                 }
             }
         })
 
+
+        //credits animation
+        this.credit_anim = this.tweens.add({
+            targets:this.credit,
+            y:60,
+            duration:1000,
+            paused:true,
+            onComplete:()=>{
+            this.credit.setText('')
+            this.total_coins.setText(total_amount)  
+            // this.total_coins.text = this.game.player.credits += gameOptions.slicePrizes[this.prize].value
+            }
+        })
+        
+        //debit animation
+        this.debit_anim = this.tweens.add({
+            targets:this.credit,
+            y:80,
+            duration:1000,
+            paused:true,
+            onComplete:()=>{
+            this.credit.setText('')
+            // this.total_coins.text = this.game.player.credits -= 500 
+            }
+        })
         
 
 
@@ -167,6 +194,10 @@ export default class PulaPutiScene extends Scene {
         pula.on('pointerup', ()=>{
             this.total_coins.text = total_amount -= 100
             this.bet_pula_text.text = bet_pula+=100
+            this.credit.setText(`- 100`);
+                    this.sound.add('coins_audio')
+                    this.sound.play('coins_audio', { volume: 0.75 })
+                    this.debit_anim.resume();
         })
 
         puti.setInteractive()
@@ -179,6 +210,10 @@ export default class PulaPutiScene extends Scene {
         puti.on('pointerup', ()=>{
             this.total_coins.text = total_amount -= 100
             this.bet_puti_text.text = bet_puti+=100
+            this.credit.setText(`- 100`);
+                    this.sound.add('coins_audio')
+                    this.sound.play('coins_audio', { volume: 0.75 })
+                    this.debit_anim.resume();
         })
     }
    
@@ -202,6 +237,8 @@ export default class PulaPutiScene extends Scene {
         this.init_board.setVisible(true)
         this.init_board.setScale(1,1)
         this.board.setVisible(false)
+
+        
         
     }
     holdBall(){
@@ -236,30 +273,39 @@ export default class PulaPutiScene extends Scene {
                     total_amount += (bet_puti*2)
                     this.winning_block.setFillStyle(0xffffff)  
                     this.winning_text.setText('PUTI').setColor('#000000')
+                    this.credit.setText(`+ ${bet_puti*2}`);
+                    this.sound.add('coins_audio')
+                    this.sound.play('coins_audio', { volume: 0.75 })
+                    this.credit_anim.resume();
                 }else{                    
                     console.log('PULA!!!!')                                  
                     total_amount += (bet_pula*2)
                     this.winning_block.setFillStyle(0xff0000) 
                     this.winning_text.setText('PULA').setColor('#ffffff')
+                    this.credit.setText(`+ ${bet_pula*2}`);
+                    this.sound.add('coins_audio')
+                    this.sound.play('coins_audio', { volume: 0.75 })
+                    this.credit_anim.resume();
                 }
                 this.bet_puti_text.text = 0
                 bet_puti=0
                 this.bet_pula_text.text = 0
                 bet_pula=0
-                this.total_coins.setText(total_amount)  
                 
                 
-                var _scene =this   
+                
+                var _scene =this  
+                
                 this.highlight_anim = this.tweens.add({
                     targets:this.winning,
                     props:{
-                        strokeColor:0xfffff0
+                        visible: false
                     },
                     yoyo:true,
-                    duration:500,
+                    duration:100,
                     onComplete:()=>{
                         _scene.winning_anim.resume() 
-                        _scene.winning_block.setVisible(true)
+                        // _scene.winning_block.setVisible(true)
                         _scene.winning_text.setVisible(true) 
                     }
                 })  
@@ -301,10 +347,10 @@ export default class PulaPutiScene extends Scene {
             if(this.initialTime <=0){
                 this.countdown_message.text = ''
                 this.hold = false;
-                this.ball.setBounce(0.4)
-                this.ball.setVelocity(
-                    Phaser.Math.Between(-100, 100), 
-                    Phaser.Math.Between(-100, 100))
+                // this.ball.setBounce(0.4)
+                // this.ball.setVelocity(
+                //     Phaser.Math.Between(-100, 100), 
+                //     Phaser.Math.Between(-100, 100))
                 this.physics.resume()
                 resetting =false;
                          
