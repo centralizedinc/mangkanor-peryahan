@@ -40,6 +40,10 @@ export default class ColorGameScene extends Scene {
      */
     create(){
 
+        //physics
+        this.physics.world.setBounds(30,50, 290, 400 )
+        this.physics.world.pause()
+
         //camera effect
         this.cameras.main.fadeIn(500);
         // set background color
@@ -76,46 +80,58 @@ export default class ColorGameScene extends Scene {
                                         .setBounce(0.5)
                                         .setCollideWorldBounds(true)
                                         .setVelocity(Phaser.Math.Between(-100,100), Phaser.Math.Between(100,200))
-                                        .play("block_animation")
+                                        .play("block_animation",true,Phaser.Math.Between(0,7))
                             this.block2.setVisible(true)
                                         .setFriction(0.9)
                                         .setBounce(0.5)
                                         .setCollideWorldBounds(true)
                                         .setVelocity(Phaser.Math.Between(-100,100), Phaser.Math.Between(100,200))
-                                        .play("block_animation")
+                                        .play("block_animation",true,Phaser.Math.Between(0,7))
                             this.block3.setVisible(true)
                                         .setFriction(0.9)
                                         .setBounce(0.5)
                                         .setCollideWorldBounds(true)
                                         .setVelocity(Phaser.Math.Between(-100,100), Phaser.Math.Between(100,200))
-                                        .play("block_animation")
+                                        .play("block_animation",true,Phaser.Math.Between(0,7))
 
                             this.physics.resume()
                         })
 
-        this.physics.world.setBounds(30,50, 290, 350 )
-        this.physics.world.pause()
+        
         
 
-        this.spin_blocks = this.anims.create({ key: 'block_animation', frames: this.anims.generateFrameNames('blocks'), frameRate:12,  repeat: -1 });
+        this.spin_blocks = this.anims.create({ 
+                                key: 'block_animation', 
+                                frames: this.anims.generateFrameNames('blocks'), 
+                                frameRate:16,  
+                                repeat: -1 
+                            });
         
-        this.table = this.add.rectangle(30,100,290,350, 0).setStrokeStyle(2, 0xffffff).setOrigin(0)
+        this.table = this.add.rectangle(30,100,290,350, 0)
+                        .setStrokeStyle(2, 0xffffff)
+                        .setOrigin(0)
 
-        this.block1 = this.physics.add.sprite(this.game.center.x-60, 130, 'blocks').setScale(0.1).setVisible(false)
-        this.block2 = this.physics.add.sprite(this.game.center.x, 130, 'blocks').setScale(0.1).setVisible(false)
-        this.block3 = this.physics.add.sprite(this.game.center.x+60, 130, 'blocks').setScale(0.1).setVisible(false)
+        this.block1 = this.physics.add.sprite(this.game.center.x-60, 130, 'blocks')
+                    .setScale(0.1)
+                    .setVisible(false)
+        this.block2 = this.physics.add.sprite(this.game.center.x, 130, 'blocks')
+                    .setScale(0.1)
+                    .setVisible(false)
+        this.block3 = this.physics.add.sprite(this.game.center.x+60, 130, 'blocks')
+                    .setScale(0.1)
+                    .setVisible(false)
 
         this.physics.world.addCollider(this.block1,this.block2)
         this.physics.world.addCollider(this.block1,this.block3)
         this.physics.world.addCollider(this.block2,this.block3)
 
-        this.pink = this.add.rectangle(25, 420, 100,50, 0xF26DAD).setOrigin(0)
-        this.white = this.add.rectangle(125, 420, 100,50, 0xffffff).setOrigin(0)
-        this.yellow = this.add.rectangle(225, 420, 100,50, 0xFFF833).setOrigin(0)
+        this.pink = this.add.rectangle(25, 500, 100,50, 0xF26DAD).setOrigin(0)
+        this.white = this.add.rectangle(125, 500, 100,50, 0xffffff).setOrigin(0)
+        this.yellow = this.add.rectangle(225, 500, 100,50, 0xFFF833).setOrigin(0)
 
-        this.blue = this.add.rectangle(25, 470, 100,50, 0x6699FF).setOrigin(0)
-        this.green = this.add.rectangle(125, 470, 100,50, 0x36F966).setOrigin(0)
-        this.red = this.add.rectangle(225, 470, 100,50, 0xFF6666).setOrigin(0)
+        this.blue = this.add.rectangle(25, 550, 100,50, 0x6699FF).setOrigin(0)
+        this.green = this.add.rectangle(125, 550, 100,50, 0x36F966).setOrigin(0)
+        this.red = this.add.rectangle(225, 550, 100,50, 0xFF6666).setOrigin(0)
 
         this.createBetButton(this.pink,0)
         this.createBetButton(this.white,1)
@@ -125,13 +141,36 @@ export default class ColorGameScene extends Scene {
         this.createBetButton(this.red,5)
 
         this.bet_text = []
-        this.bet_text.push(this.add.text(60, 435, bets[0], {color:0xffffff}).setDepth(5).setOrigin(0.5))
-        this.bet_text.push(this.add.text(160, 435, bets[1], {color:0xffffff}).setDepth(5).setOrigin(0.5))
-        this.bet_text.push(this.add.text(260, 435, bets[2], {color:0xffffff}).setDepth(5).setOrigin(0.5))
-
-        this.bet_text.push(this.add.text(60, 485, bets[3], {color:0xffffff}).setDepth(5).setOrigin(0.5))
-        this.bet_text.push(this.add.text(160, 485, bets[4], {color:0xffffff}).setDepth(5).setOrigin(0.5))
-        this.bet_text.push(this.add.text(260, 485, bets[5], {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.pink.x+this.pink.width/2, 
+                                    this.pink.y+this.pink.height/2, 
+                                    bets[0], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.white.x+this.white.width/2, 
+                                    this.white.y+this.white.height/2, 
+                                    bets[1], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.yellow.x+this.yellow.width/2, 
+                                    this.yellow.y+this.yellow.height/2, 
+                                    bets[2], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.blue.x+this.blue.width/2, 
+                                    this.blue.y+this.blue.height/2, 
+                                    bets[3], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.green.x+this.green.width/2, 
+                                    this.green.y+this.green.height/2, 
+                                    bets[4], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
+        this.bet_text.push(this.add.text(
+                                    this.red.x+this.red.width/2, 
+                                    this.red.y+this.red.height/2, 
+                                    bets[5], 
+                                    {color:0xffffff}).setDepth(5).setOrigin(0.5))
 
         this.exit.setInteractive()
         this.exit.on("pointerup", ()=>{
@@ -147,7 +186,9 @@ export default class ColorGameScene extends Scene {
         paused:true,
         onComplete:()=>{
           this.credit.setText('')
+          console.log('winnings.total:::', winnings.total)
           this.total_coins.text = this.game.player.credits += winnings.total
+          winnings = {total:0,slot1:{}, slot2:{}, slot3:{}};
         }
       })
       
@@ -159,7 +200,7 @@ export default class ColorGameScene extends Scene {
         paused:true,
         onComplete:()=>{
           this.credit.setText('')
-          this.total_coins.text = this.game.player.credits -= 500 
+          this.total_coins.text = this.game.player.credits -= 100 
         }
       })
     }
@@ -178,8 +219,10 @@ export default class ColorGameScene extends Scene {
             btn.setStrokeStyle()
         })
         btn.on('pointerup',()=>{
-            this.game.player.credits -=100
-            this.total_coins.setText(this.game.player.credits)
+            // this.game.player.credits -=100
+            // this.total_coins.setText(this.game.player.credits)
+            this.credit.setText('- 100')
+            this.debit_anim.resume()
             bets[indx] +=100
             this.bet_text[indx].setText(bets[indx] )
         })
@@ -223,7 +266,7 @@ export default class ColorGameScene extends Scene {
         block2_done = false;
         block3_done = false;
         bets = [0,0,0,0,0,0]
-        winnings = {total:0,slot1:{}, slot2:{}, slot3:{}};
+        
         this.bet_text.forEach(txt=>{
             txt.setText(0)
         })
@@ -246,7 +289,6 @@ export default class ColorGameScene extends Scene {
      * 
      */
     update(){
-        
         if(this.block1.body.deltaY() == 0 && this.block1.body.onFloor() && !block1_done){
             block1_done = true
             var indx1=Phaser.Math.Between(0,5)
@@ -328,10 +370,11 @@ export default class ColorGameScene extends Scene {
             this.add.tween({
                 targets: [this.slot1, this.slot2, this.slot3],
                 props:{
-                    scaleY:{value:0.04, duration: 100},
-                    y:{value:130, duration: 100}
+                    scaleY:{value:0.04, duration: 100, deley:3000},
+                    y:{value:130, duration: 100,  deley:3000}
                 },
                 onComplete:()=>{
+                    console.log('completed animation')
                     this.reset()
                     isAnimation = false;
                 }

@@ -85,16 +85,38 @@ export default class BootScene extends Scene {
   }
 
   startGame(){
+
+
     this.game.player = {
       name:this.facebook.playerName, 
-      credits:2500
+      credits: 0
     }
 
     this.game.center = {
       x:this.game.renderer.width/2,
       y: this.game.renderer.height/2
     }
-    this.scene.start('MenuScene')
+
+    this.facebook.getData([ 'credits' ]);
+
+    this.facebook.on('getdata', () => {   
+      console.log('credits:::',this.facebook.data.get('credits'))
+      if(!this.facebook.data.get('credits')){
+        //first time user
+        this.game.player.credits = 0;
+        this.facebook.data.set('credits', 0);
+      }else{
+        this.game.player.credits = this.facebook.data.get('credits');
+      }
+       
+      this.scene.start('MenuScene')
+  
+  }, this);
+    
+
+  
+
+    
   }
 
 }

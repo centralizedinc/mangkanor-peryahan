@@ -77,6 +77,9 @@ export default class RoletaScene extends Scene {
     });
 
 
+    
+
+    
 
     // camera zoom animation
     this.cam_zoom = this.tweens.add({
@@ -104,6 +107,7 @@ export default class RoletaScene extends Scene {
       onComplete:()=>{
         this.credit.setText('')
         this.total_coins.text = this.game.player.credits += gameOptions.slicePrizes[this.prize].value
+        this.facebook.data.set('credits', this.game.player.credits);
       }
     })
     
@@ -116,6 +120,7 @@ export default class RoletaScene extends Scene {
       onComplete:()=>{
         this.credit.setText('')
         this.total_coins.text = this.game.player.credits -= 500 
+        this.facebook.data.set('credits', this.game.player.credits);
       }
     })
   }
